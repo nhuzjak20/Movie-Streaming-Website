@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+   
+</head>
+<body class="">
+    <div class="footer-klasa rastegni" style="padding: 1px;">
+        <div>
+            <h2>BlogSite</h2>
+        </div>
+        <div>
+            <h1>Prijava</h1>
+        </div>
+        <div class="" style="display: flex; align-items: center; width: 16%;">
+
+            <a href="#" class="margina-mala">O autoru</a>
+            <a href="#">Korištene tehnologije</a>
+        </div>
+    </div>
+    <div class="padding-mali centriraj pozadina">
+        <div class="glassmorph smanji  pomakniMain">
+            <nav class="centriraj">
+                <div class="nav">
+                    <li class="nav-item" id="loginLink">
+                        <a href="#" class="nav-link active" id="loginLink">Login</a>
+                    </li>
+                    <li class="nav-item" id="registracijaLink"><a href="#" class="nav-link" >Registracija</a></li>
+                </div>
+            </nav>
+            <main class="centriraj">
+                <form action="/logiraj" method="post" id="login">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Korisničko ime: </label>
+                        <input type="text" class="form-control" id="username" name="username" aria-describedby="pomoc-username">
+                        <div id="pomoc-username" class="form-text">Unesi svoj username</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lozinka" class="form-label">Lozinka: </label>
+                        <input type="password" class="form-control"name="password" id="password" aria-describedby="pomoc-lozinka">
+                        <div id="pomoc-lozinka" class="form-text">Unesi svoju lozinku</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ulogiraj se</button>
+                </form>
+                <form action="/registriraj" method="post" id="registracija" class="nevidljivo">
+                    <div class="mb-3">
+                        <label for="usernameReg" class="form-label">Korisničko ime:</label>
+                        <input type="text" class="form-control" id="usernameReg" name="username" aria-describedby="pomoc-username">
+                        <div id="pomoc-username" class="form-text">Unesi svoj username</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordReg" class="form-label">Lozinka: </label>
+                        <input type="password" class="form-control"name="password" id="passwordReg" aria-describedby="pomoc-lozinka">
+                        <div id="pomoc-lozinka" class="form-text">Unesi svoju lozinku</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lozinkaPon" class="form-label">Ponovi lozinku:</label>
+                        <input type="password" id="passwordPon" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registriraj se</button>
+                </form>
+            </main>
+        </div>
+        
+    </div>
+    <script>
+        const obrazci = document.getElementsByTagName('form')
+        var login = document.getElementById('loginLink')
+        var registracija = document.getElementById('registracijaLink')
+        var loginForm = document.getElementById('login')
+        var registerForm = document.getElementById('registracija')
+        login.addEventListener('click', ()=>{
+            if(registerForm.classList.contains('nevidljivo')) return;
+            else {
+                registerForm.classList.toggle('nevidljivo', true)
+                loginForm.classList.toggle('nevidljivo', false);
+                registracija.classList.toggle('active', true)
+                login.classList.toggle('active', false)
+            }
+
+        })
+        registracija.addEventListener('click',()=>{
+            if(loginForm.classList.contains('nevidljivo')) return;
+            else {
+                registerForm.classList.toggle('nevidljivo', false)
+                loginForm.classList.toggle('nevidljivo', true);
+                login.classList.toggle('active', false)
+                registracija.classList.toggle('active', true)
+            }
+        })
+    </script>
+</body>
+</html>
