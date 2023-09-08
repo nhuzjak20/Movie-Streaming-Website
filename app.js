@@ -1,3 +1,5 @@
+//<a target="_blank" href="https://icons8.com/icon/wMubOjl2fqdm/anonymous-mask">Anonymous Mask</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 const express = require('express');
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
@@ -17,13 +19,19 @@ let db = new sqlite3.Database('./db/users.db',(err) => {
 
 app.use(express.static('css'))
 app.use(express.static('public'))
+app.use(express.static('profilePictures'))
 app.use(cookieParser())
 app.set('view engine', 'ejs');
 
-db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
+
+/*db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
     if (err) return;
     else console.log(data);
-})
+})*/
+
+function vratiTest(){
+    return false;
+}
 
 db.all('select * from Korisnici',(err, results) => {
     if (err) console.log(err);
@@ -34,28 +42,62 @@ db.all('select * from Korisnici',(err, results) => {
     else console.log('OK'); 
 })
 
+//db.all('create table Objave(korisnik varchar(50) not null, objava varchar(300) not null, )')
+
 //Ako vrati false korisnik ne postoji, ako vrati true onda postoji
 function ProvjeriKorisnika(user, password){
-    db.all('SELECT * FROM Korisnici WHERE username ="' + user + '" AND pass="' + password + '"', (err, rows) =>{
-        if(err) console.log(err);
-        else if(rows.length) {
-            console.log(rows);
-            return true;
-        } else return false;
-    })
+    console.log("provjera Korisnika: ")
+    var podatak = db.all('SELECT * FROM Korisnici WHERE username ="' + user + '" AND pass="' + password + '"', (err, rows) =>{
+            if(err) console.log(err);
+            else if(rows.length>0) {
+                console.log("Ispisiani Redovi:" )
+                console.log(rows);
+                
+                return true;
+            } else return false;
+        })
+    console.log(podatak)
+    return podatak;
+}
+
+function A() {
+	B(stuff, function(outputOfB) { // This changed
+		let processedResult = outputOfB; // This changed
+		console.log(processedResult);
+	});
+}
+
+function B(input, callback) { // This changed
+	// Processing here, like sending an HTTP request and saving the response.
+	let result = input + someOtherStuff(); 
+	console.log(result);
+	callback(result); // This changed
+}
+
+//vrati putanju za sliku
+function vratiSlikuIme(broj){
+    switch(broj){
+        case '1' : {return '/Anonimus.png'; break}
+        case '2' : {return '/IronMan.png'; break}
+        case '3' : {return '/Fredy.png'; break}
+        case '4' : {return '/Jason.png'; break}
+    }
+    
 }
 
 //Ako vrati true, kolacic postoji
 function ProvjeriKolacic(id, user){
-    db.all('SELECT * FROM Korisnici WHERE kolacic="' + id + '" AND username="' + user + '"', (err, rows) => {
+    var podatak = db.all('SELECT * FROM Korisnici WHERE kolacic="' + id + '" AND username="' + user + '"', (err, rows) => {
         if(err) {
             console.log(err);
             return false; 
         } else if(rows.length){
-            console.log(rows);
+            console.log("Redovi sa kolacicem test" + rows)
             return true
         } else return false
     })
+    console.log(podatak)
+    return podatak
 }
 
 
@@ -71,7 +113,12 @@ app.post('/logiraj',urlencodedParser ,(req, res)=>{
     const pass = req.body.password
     console.log(username + " " + pass)
     const kljuc = Date.now()
-    if(!ProvjeriKorisnika(username,pass)){
+    console.log("Bool u logu: " + ProvjeriKorisnika(username,pass))
+    if(ProvjeriKorisnika(username,pass) == "{}"){
+        console.log("Nema logina")
+        res.redirect('/login?status=false')
+    }
+    if(ProvjeriKorisnika(username,pass).toString() != 'Database {}' || ProvjeriKorisnika(username,pass) != null){
         console.log("Login radi")
         db.run('UPDATE Korisnici SET kolacic= ? where username = ?', [kljuc, username], (err, result) => {
             if(err){
@@ -96,21 +143,44 @@ app.get('/', (req, res)=>{
         res.redirect('/login');
     } else {
         console.log(req.cookies);
-        if(!ProvjeriKolacic(req.cookies.uniqueID, req.cookies.username)) {
-            res.render('home', { username: req.cookies.user})
+        if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.username)) {
+            res.render('home', { username: req.cookies.user, slika: vratiSlikuIme(req.cookies.slikica)})
         } else { res.redirect('/login?status=NoCookie'); }
     }
 })
 
+
 app.get('/odjava', (req, res) => {
-    res.clearCookie()
+    res.clearCookie('uniqueID')
+    res.clearCookie('user')
+    res.clearCookie('userID')
     res.redirect('/login?status=LoggedOut')
+})
+
+app.get('/ikonaSelect?ikona=anon', (req, res)=>{
+    const ikona = req.params.ikona
+    console.log(ikona)
+    switch(ikona){
+        case 'anon': {
+            res.send('<img src="/Anonimus.png" alt="anon" />')
+        }
+        case 'iron': {
+            res.send('<img src="/IronMan.png" alt="anon" />')
+        }
+        case 'fred': {
+            res.send('<img src="/FreddyFazbear.png" alt="anon" />')
+        }
+        case 'json': {
+            res.send('<img src="/Jason.png" alt="anon" />')
+        }
+    }
 })
 
 
 app.post('/registriraj',urlencodedParser ,(req, res)=>{
     const username = req.body.username
     const pass = req.body.password
+    const slikica = req.body.slikica
     const kolacic = Date.now()
     if(username == undefined || pass == undefined || username == null){
         console.log("Podaci ne valjaju")
@@ -121,25 +191,26 @@ app.post('/registriraj',urlencodedParser ,(req, res)=>{
         else if(results.length != 0){
             res.redirect('/login?status=failed')
         } else {
-            db.run('INSERT INTO Korisnici(username,pass,icon, kolacic) VALUES (?,?,?,?)',[username,pass,'Anonimus', kolacic],(err)=>{
+            db.run('INSERT INTO Korisnici(username,pass,icon, kolacic) VALUES (?,?,?,?)',[username,pass,slikica, kolacic],(err)=>{
                 if(err) {
                     console.log(err)
                     res.redirect('/login')
                 } else {
                     res.cookie('uniqueID', kolacic)
                     res.cookie('userID', username)
+                    res.cookie('icon', slikica)
                     console.log('uspjesna registracija')
                     res.redirect('/login')
                 }
             })
         } 
-    })
-    
-    
+    })  
 })
+
 
 app.listen(5000, ()=>{
     console.log("Server radi")
 })
 
 "CREATE TABLE Korisnici (	id INT PRIMARY KEY IDENTITY(1,1),	username VARCHAR(20) NOT NULL,pass VARCHAR(20),icon NVARCHAR(MAX));"
+
