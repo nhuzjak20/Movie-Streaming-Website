@@ -26,10 +26,10 @@ app.use(cookieParser())
 app.set('view engine', 'ejs');
 
 
-/*db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
+db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
     if (err) return;
     else console.log(data);
-})*/
+})
 
 
 db.all('select * from Korisnici',(err, results) => {
@@ -111,7 +111,7 @@ app.post('/logiraj',urlencodedParser ,async (req, res)=>{
                     res.redirect('/login?status=error')
                 } else {
                     res.cookie('uniqueID', kljuc)
-                    res.cookie('user', username)
+                    res.cookie('userID', username)
                     console.log("Kolacici postavljeni key:" + kljuc + " user:" + username)
                     res.redirect('/')
                 }
@@ -147,15 +147,28 @@ app.post('/logiraj',urlencodedParser ,async (req, res)=>{
     }*/
 })
 
+
+
 app.get('/', (req, res)=>{
     console.log('Spajanje na home')
-    if(!req.cookies.user){
+    if(!req.cookies.userID){
         console.log('No cookies')
         res.redirect('/login?status=NoCookie');
     } else {
-        console.log(req.cookies);
-        if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.user)) {
-            res.render('home', { username: req.cookies.user, slika: vratiSlikuIme(req.cookies.slikica)})
+        if(req.cookies.userID == 'AdministratorShegy'){
+            res.render('admin', {username: 'Shegy', slika: './Anonimus.png'})
+            res.end();
+            return;
+        } else if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.userID)) {
+            const ikonica = (arg)=>{
+                switch(arg){
+                    case '1': return './Anonimus.png';
+                    case '2': return './Naruton.png';
+                    case '3': return './Fredi.png';
+                    case '4': return './Ironman.png';
+                }
+            }
+            res.render('home', { username: req.cookies.userID, slika: ikonica(req.cookies.icon)})
         } else { res.redirect('/login?status=NoCookie'); }
     }
 })
@@ -166,25 +179,6 @@ app.get('/odjava', (req, res) => {
     res.clearCookie('user')
     res.clearCookie('userID')
     res.redirect('/login?status=LoggedOut')
-})
-
-app.get('/ikonaSelect?ikona=anon', (req, res)=>{
-    const ikona = req.params.ikona
-    console.log(ikona)
-    switch(ikona){
-        case 'anon': {
-            res.send('<img src="/Anonimus.png" alt="anon" />')
-        }
-        case 'iron': {
-            res.send('<img src="/IronMan.png" alt="anon" />')
-        }
-        case 'fred': {
-            res.send('<img src="/FreddyFazbear.png" alt="anon" />')
-        }
-        case 'json': {
-            res.send('<img src="/Jason.png" alt="anon" />')
-        }
-    }
 })
 
 
@@ -211,13 +205,38 @@ app.post('/registriraj',urlencodedParser ,(req, res)=>{
                     res.cookie('userID', username)
                     res.cookie('icon', slikica)
                     console.log('uspjesna registracija')
-                    res.redirect('/login')
+                    res.redirect('/odaberisliku')
                 }
             })
         } 
     })  
 })
 
+app.get('/odaberisliku', (req, res) => {
+    if(!req.cookies.userID){
+        console.log('No cookies')
+        res.redirect('/login?status=NoCookie');
+    } else {
+        res.render('imageSelect', {username: req.cookies.userID})
+    }
+})
+
+
+
+app.get('/imageSelectRoute', (req, res) =>{
+    const user = req.cookies.userID
+    console.log(req.query.num)
+    console.log("Radi image Select")
+    db.all('UPDATE Korisnici SET icon=? WHERE username=?',[req.query.num, user], (err, result) =>{
+        if(err) {
+            console.log(err)
+        } else {
+            console.log(result)
+            res.cookie('icon', req.query.num)
+            res.redirect('/')
+        }
+    })
+})
 
 app.listen(5000, ()=>{
     console.log("Server radi")
