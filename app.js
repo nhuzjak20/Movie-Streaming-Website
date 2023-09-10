@@ -16,6 +16,8 @@ let db = new sqlite3.Database('./db/users.db',(err) => {
     console.log('Connected to the in-memory SQlite database.');
   });
 
+//komentar
+
 
 app.use(express.static('css'))
 app.use(express.static('public'))
