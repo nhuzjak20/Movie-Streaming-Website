@@ -28,8 +28,28 @@
         </div>
     </div>
     <div class="mainMreza" id="parent">
-        <div id="div1" class="centriraj glassmorph">
-            <h5>Tekst</h5>
+        <div id="div1" class="glassmorph" class="">
+            <form action="" method="get" class="margina-mala">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Naslov:</label>
+                    <input type="email" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <div id="emailHelp" class="form-text">Napiši naslov objave</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Upiši komentar:</label>
+                    <textarea class="form-control" name="komentar" id="exampleFormControlTextarea1" rows="4"></textarea>
+                  </div>
+                  <select class="form-select" name="kategorija" aria-label="Default select example">
+                    <option selected>Odaberi kategoriju:</option>
+                    <option value="1">Filmovi</option>
+                    <option value="2">Video Igrice</option>
+                    <option value="3">Web Development</option>
+                  </select>
+                  <div class="poravnaj">
+                    <button type="submit" class="btn btn-primary">Podnesi</button>
+                    <button type="reset" class="btn btn-secondary">Obriši</button>
+                  </div>
+            </form>
         </div>
         <div id="div2" class="glassmorph centriraj">
             <div style="margin: 2%;">

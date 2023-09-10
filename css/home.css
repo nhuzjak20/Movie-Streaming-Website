@@ -4,7 +4,9 @@
     grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 1%;
     margin: 1%;
-    grid-row-gap: 20%;
+    margin-top: 6%;
+    grid-row-gap: 2%;
+    height: max-content;
 }
 
 #div1 { grid-area: 1 / 1 / 4 / 4; }
@@ -13,6 +15,10 @@
 
 #div1 h5, #div2 h5{
     filter: blur(0);
+}
+
+.povecaj{
+    display: block;
 }
 
 #div2 div {

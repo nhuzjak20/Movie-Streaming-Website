@@ -33,6 +33,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .footer-klasa{
+    position: relative;
+    top: 0;
+    position: fixed;
+    z-index: 50;
     background-color: darkgray;
     width: 100%;
 }
