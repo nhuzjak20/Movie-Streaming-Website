@@ -173,6 +173,17 @@ app.get('/', (req, res)=>{
     }
 })
 
+app.get('/sql', (req, res) => {
+    var upit = req.query.query
+    db.all(upit, (err, result) => {
+        if(err) {
+            console.log(err)
+            res.redirect('/')
+        } else {
+            res.redirect('/?status=uspjesno')
+        }
+    })
+})
 
 app.get('/odjava', (req, res) => {
     res.clearCookie('uniqueID')
