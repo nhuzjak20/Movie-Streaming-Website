@@ -29,9 +29,6 @@ app.set('view engine', 'ejs');
     else console.log(data);
 })*/
 
-function vratiTest(){
-    return false;
-}
 
 db.all('select * from Korisnici',(err, results) => {
     if (err) console.log(err);
@@ -47,32 +44,18 @@ db.all('select * from Korisnici',(err, results) => {
 //Ako vrati false korisnik ne postoji, ako vrati true onda postoji
 function ProvjeriKorisnika(user, password){
     console.log("provjera Korisnika: ")
-    var podatak = db.all('SELECT * FROM Korisnici WHERE username ="' + user + '" AND pass="' + password + '"', (err, rows) =>{
-            if(err) console.log(err);
-            else if(rows.length>0) {
-                console.log("Ispisiani Redovi:" )
-                console.log(rows);
-                
-                return true;
-            } else return false;
-        })
-    console.log(podatak)
-    return podatak;
-}
+     
+        db.all('SELECT * FROM Korisnici WHERE username ="' + user + '" AND pass="' + password + '"', async (err, rows) =>{
+        if(err) console.log(err);
+        else if(rows.length>0) {
+            console.log("Ispisiani Redovi:" )
+            console.log(rows);
+            
+            return true;
+        } else return false;
+        });
+    }
 
-function A() {
-	B(stuff, function(outputOfB) { // This changed
-		let processedResult = outputOfB; // This changed
-		console.log(processedResult);
-	});
-}
-
-function B(input, callback) { // This changed
-	// Processing here, like sending an HTTP request and saving the response.
-	let result = input + someOtherStuff(); 
-	console.log(result);
-	callback(result); // This changed
-}
 
 //vrati putanju za sliku
 function vratiSlikuIme(broj){
@@ -87,7 +70,8 @@ function vratiSlikuIme(broj){
 
 //Ako vrati true, kolacic postoji
 function ProvjeriKolacic(id, user){
-    var podatak = db.all('SELECT * FROM Korisnici WHERE kolacic="' + id + '" AND username="' + user + '"', (err, rows) => {
+    
+    var podatak = db.all('SELECT * FROM Korisnici WHERE kolacic="' + id + '" AND username="' + user + '"', async (err, rows) => {
         if(err) {
             console.log(err);
             return false; 
@@ -108,17 +92,42 @@ app.get('/login',(req, res)=>{
     res.sendFile(__dirname + '/html/login/login.html');
 })
 
-app.post('/logiraj',urlencodedParser ,(req, res)=>{
+app.post('/logiraj',urlencodedParser ,async (req, res)=>{
     const username = req.body.username
     const pass = req.body.password
     console.log(username + " " + pass)
     const kljuc = Date.now()
     console.log("Bool u logu: " + ProvjeriKorisnika(username,pass))
-    if(ProvjeriKorisnika(username,pass) == "{}"){
+    await db.all('SELECT * FROM Korisnici WHERE username ="' + username + '" AND pass="' + pass + '"', async (err, rows) =>{
+        if(err) console.log(err);
+        else if(rows.length>0) {
+            console.log("Ispisiani Redovi:" )
+            console.log(rows);
+            db.run('UPDATE Korisnici SET kolacic= ? where username = ?', [kljuc, username], (err, result) => {
+                if(err){
+                    console.log(err)
+                    res.redirect('/login?status=error')
+                } else {
+                    res.cookie('uniqueID', kljuc)
+                    res.cookie('user', username)
+                    console.log("Kolacici postavljeni key:" + kljuc + " user:" + username)
+                    res.redirect('/')
+                }
+            })
+        } else {
+            console.log(err)
+            res.redirect('/login?status=error')
+        }
+        });
+    /*
+    if(!ProvjeriKorisnika(username,pass)){
+        setTimeout(()=>{}, 200)
         console.log("Nema logina")
         res.redirect('/login?status=false')
+        res.end();
     }
-    if(ProvjeriKorisnika(username,pass).toString() != 'Database {}' || ProvjeriKorisnika(username,pass) != null){
+    if(ProvjeriKorisnika(username,pass)){
+        setTimeout(()=>{}, 200)
         console.log("Login radi")
         db.run('UPDATE Korisnici SET kolacic= ? where username = ?', [kljuc, username], (err, result) => {
             if(err){
@@ -132,18 +141,18 @@ app.post('/logiraj',urlencodedParser ,(req, res)=>{
             }
         })
     } else {
-        res.redirect('/login?status=false')
-    }
+        res.end();
+    }*/
 })
 
 app.get('/', (req, res)=>{
     console.log('Spajanje na home')
-    if(!req.cookies){
+    if(!req.cookies.user){
         console.log('No cookies')
-        res.redirect('/login');
+        res.redirect('/login?status=NoCookie');
     } else {
         console.log(req.cookies);
-        if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.username)) {
+        if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.user)) {
             res.render('home', { username: req.cookies.user, slika: vratiSlikuIme(req.cookies.slikica)})
         } else { res.redirect('/login?status=NoCookie'); }
     }

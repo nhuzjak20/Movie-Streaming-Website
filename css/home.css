@@ -3,9 +3,21 @@
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 1%;
-    grid-row-gap: 1%;
+    margin: 1%;
+    grid-row-gap: 20%;
 }
 
 #div1 { grid-area: 1 / 1 / 4 / 4; }
 #div2 { grid-area: 4 / 1 / 7 / 4; }
 #div3 { grid-area: 1 / 4 / 7 / 7; }
+
+#div1 h5, #div2 h5{
+    filter: blur(0);
+}
+
+#div2 div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
