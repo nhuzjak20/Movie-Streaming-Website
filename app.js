@@ -152,13 +152,21 @@ app.post('/logiraj',urlencodedParser ,async (req, res)=>{
 
 app.get('/', (req, res)=>{
     console.log('Spajanje na home')
+    var num;
     if(!req.cookies.userID){
         console.log('No cookies')
         res.redirect('/login?status=NoCookie');
     } else {
         if(req.cookies.userID == 'AdministratorShegy'){
-            res.render('admin', {username: 'Shegy', slika: './Anonimus.png'})
-            res.end();
+            db.all('SELECT * FROM Objave where objavio="AdministratorShegy"', async (err, result) => {
+                if (err) console.log(err);
+                else {
+                    res.render('home', { username: 'Shegy', slika: './Anonimus.png', num : result.length})
+                    res.end();
+                }
+            })
+            //res.render('admin', {username: 'Shegy', slika: './Anonimus.png', num : result.length})
+            //res.end();
             return;
         } else if(ProvjeriKolacic(req.cookies.uniqueID, req.cookies.userID)) {
             const ikonica = (arg)=>{
@@ -169,7 +177,13 @@ app.get('/', (req, res)=>{
                     case '4': return './Ironman.png';
                 }
             }
-            res.render('home', { username: req.cookies.userID, slika: ikonica(req.cookies.icon)})
+            db.all('SELECT * FROM Objave where objavio=?', [req.cookies.userID], async (err, result) => {
+                if (err) console.log(err);
+                else {
+                    res.render('home', { username: req.cookies.userID, slika: ikonica(req.cookies.icon), num : result.length})
+                    res.end();
+                }
+            })
         } else { res.redirect('/login?status=NoCookie'); }
     }
 })
@@ -234,7 +248,7 @@ app.post('/ObjaveApi', urlencodedParser,(req, res) => {
         if(err) res.send(`<h3>Error: ${err.message}</h3>`);
         else {
             result.forEach((value, key) => {
-                rezultat+= `<div class="container-fluid">
+                rezultat+= `<div class="comment">
                 <div style="display: flex;justify-content:space-between; align-items:center;">
                     <h5>${value.naslov}</h5>
                     <h5>${value.objavio}</h5>

@@ -8,6 +8,32 @@
     <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <style>
+        .comment {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        /* CSS za korisničko ime */
+        .username {
+            font-weight: bold;
+            color: #0366d6;
+        }
+
+        /* CSS za tekst komentara */
+        .comment-text {
+            margin-top: 5px;
+        }
+
+        /* CSS za datum komentara */
+        .comment-date {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
     <div class="footer-klasa rastegni" style="padding: 1px;">
@@ -54,12 +80,15 @@
             </form>
         </div>
         <div id="div2" class="glassmorph centriraj">
-            <div style="margin: 2%;">
+            <div style="margin: 2%; display: flex; flex-direction: column; align-items: center;">
                 <div class="slika">
                     <img src=<%= slika %> alt="">
                 </div>
                 <div class="tekst">
-                    <h6><%= username %></h6>
+                    <h4><%= username %></h4>
+                </div>
+                <div class="statistika">
+                    <h6>Broj objava: <%= num %></h6>
                 </div>
             </div>
         </div>

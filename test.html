@@ -1,122 +1,31 @@
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-      </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><h1>Tekst</h1></div>
-    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><div class="h1">Telst2</div></div>
-    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><h1>tekst3</h1></div>
-</div>
+<style>
+  .comment {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
 
+        /* CSS za korisničko ime */
+        .username {
+            font-weight: bold;
+            color: #0366d6;
+        }
 
+        /* CSS za tekst komentara */
+        .comment-text {
+            margin-top: 5px;
+        }
 
-
-<div class="footer-klasa rastegni" style="padding: 1px;">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Dobro došao, <%= username %>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/odjava">Odjava</a></li>
-        </ul>
-    </div>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane2" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane3" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
-          </li>
-    </ul>
-    <div class="" style="display: flex; align-items: center; width: 16%;">
-
-        <a href="#" class="margina-mala">O autoru</a>
-        <a href="#">Korištene tehnologije</a>
-    </div>
-</div>
-<div class="">
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-            <div id="div1" class="glassmorph" class="">
-                <form action="" method="get" class="margina-mala">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Naslov:</label>
-                        <input type="email" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">Napiši naslov objave</div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Upiši komentar:</label>
-                        <textarea class="form-control" name="komentar" id="exampleFormControlTextarea1" rows="4"></textarea>
-                      </div>
-                      <select class="form-select" name="kategorija" aria-label="Default select example">
-                        <option selected>Odaberi kategoriju:</option>
-                        <option value="1">Filmovi</option>
-                        <option value="2">Video Igrice</option>
-                        <option value="3">Web Development</option>
-                        <option value="4">Serije</option>
-                      </select>
-                      <div class="poravnaj">
-                        <button type="submit" class="btn btn-primary">Podnesi</button>
-                        <button type="reset" class="btn btn-secondary">Obriši</button>
-                      </div>
-                </form>
-            </div>
-            <div id="div2" class="glassmorph centriraj">
-                <div style="margin: 2%;">
-                    <div class="slika">
-                        <img src=<%= slika %> alt="">
-                    </div>
-                    <div class="tekst">
-                        <h6><%= username %></h6>
-                    </div>
-                </div>
-            </div>
-            <div id="div3" class="glassmorph">
-                <h5>5ekst</h5>
-            </div>
-            
-        </div>
-        <div class="tab-pane fade" id="profile-tab-pane2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-            <div class="card">
-                <div class="card-body">
-                  This is some text within a card body.
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-body">
-                  This is some text within a card body.
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-body">
-                  This is some text within a card body.
-                </div>
-              </div>
-        </div>
-        <div class="tab-pane fade" id="profile-tab-pane3" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><h1>tekst3</h1></div>     
-</div>
-
-<div>
-    <div>
-        <h5>${naslov}</h5>
-        <h5>${objavio}</h5>
-    </div>
-    <div>
-        <p>${komentar}</p>
-    </div>
-    <div>
-        <p>${lajkovi}</p>
-        <button>Lajkaj</button>
-        <p>${datum}</p>
-    </div>
+        /* CSS za datum komentara */
+        .comment-date {
+            font-size: 12px;
+            color: #777;
+        }
+</style>
+<div class="comment">
+  <span class="username">Korisničko_ime:</span>
+  <p class="comment-text">Ovo je primjer komentara na YouTubeu. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <span class="comment-date">12. rujna 2023.</span>
 </div>
