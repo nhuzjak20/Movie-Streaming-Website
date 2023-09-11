@@ -234,17 +234,20 @@ app.post('/ObjaveApi', urlencodedParser,(req, res) => {
         if(err) res.send(`<h3>Error: ${err.message}</h3>`);
         else {
             result.forEach((value, key) => {
-                rezultat+= `=<div>
-                <div>
+                rezultat+= `<div class="container-fluid">
+                <div style="display: flex;justify-content:space-between; align-items:center;">
                     <h5>${value.naslov}</h5>
                     <h5>${value.objavio}</h5>
                 </div>
                 <div>
                     <p>${value.komentar}</p>
                 </div>
-                <div>
-                    <p>${value.lajkovi}</p>
-                    <button>Lajkaj</button>
+                <div style="display: flex;justify-content:space-between; align-items:center;" >
+                    <div style="display: flex;justify-content:center; align-items:center;">
+                        <p>${value.lajkovi}</p>
+                        <button>Lajkaj</button>
+                    </div>
+                    
                     <p>${value.datum}</p>
                 </div>
             </div>`

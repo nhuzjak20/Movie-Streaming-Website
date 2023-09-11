@@ -5,6 +5,7 @@
     <title>Home Page</title>
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="home.css">
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
@@ -29,10 +30,10 @@
     </div>
     <div class="mainMreza" id="parent">
         <div id="div1" class="glassmorph" class="">
-            <form action="" method="get" class="margina-mala">
+            <form action="/posaljiobrazac" method="post" class="margina-mala">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Naslov:</label>
-                    <input type="email" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                     <div id="emailHelp" class="form-text">Napiši naslov objave</div>
                   </div>
                   <div class="mb-3">
@@ -63,7 +64,24 @@
             </div>
         </div>
         <div id="div3" class="glassmorph">
-            <h5>5ekst</h5>
+            <div class="flexaj margina-mala">
+                <form hx-post="/ObjaveApi" style="width: auto; display: flex;" hx-target="#objave">
+                  <select style="width: auto;" class="form-select" name="kategorija" aria-label="Default select example">
+                    <option value="5">Posljednje objave</option>
+                    <option value="1">Filmovi</option>
+                    <option value="2">Video Igrice</option>
+                    <option value="3">Web Development</option>
+                    <option value="4">Serije</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">Potraži</button>
+                </form>
+                  
+                <h4 >Objave</h4>
+              </div>
+              <hr>
+              <div id="objave">
+
+              </div>
         </div>
     </div>
 </body>
