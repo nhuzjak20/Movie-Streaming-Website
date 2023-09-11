@@ -220,9 +220,7 @@ app.post('/pretraziBar', urlencodedParser ,(req, res) => {
     upit = `SELECT * FROM Korisnici WHERE username like "%${req.body.pretraga}%"`
     var rez = ``
     console.log(upit)
-    if(req.body.pretraga == ""){
-        res.end("")
-    }
+    
     db.all(upit, (err, rezultat) => {
         if (err) {
             console.log(err)
