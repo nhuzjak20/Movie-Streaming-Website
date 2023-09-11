@@ -21,9 +21,6 @@
     display: block;
 }
 
-#div2 div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+.margina-mini{
+    margin: 5%;
 }

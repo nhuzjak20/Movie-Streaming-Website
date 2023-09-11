@@ -161,7 +161,7 @@ app.get('/', (req, res)=>{
             db.all('SELECT * FROM Objave where objavio="AdministratorShegy"', async (err, result) => {
                 if (err) console.log(err);
                 else {
-                    res.render('home', { username: 'Shegy', slika: './Anonimus.png', num : result.length})
+                    res.render('admin', { username: 'Shegy', slika: './Anonimus.png', num : result.length})
                     res.end();
                 }
             })
@@ -212,6 +212,30 @@ app.post('/posaljiobrazac',urlencodedParser ,function(req, res) {
             res.redirect('/')
         } else {
             res.redirect('/?status=objavaUspjesna')
+        }
+    })
+})
+
+app.post('/pretraziBar', urlencodedParser ,(req, res) => {
+    upit = `SELECT * FROM Korisnici WHERE username like "%${req.body.pretraga}%"`
+    var rez = ``
+    console.log(upit)
+    if(req.body.pretraga == ""){
+        res.end("")
+    }
+    db.all(upit, (err, rezultat) => {
+        if (err) {
+            console.log(err)
+            res.redirect('/')
+        } else {
+            //console.log(rezultat)
+            rezultat.forEach((value, key) => {
+                rez += `<div style="display: flex; justify-content: flex-start;">
+                <img src="${vratiSlikuIme(value.icon)}" alt="" >
+                <p>${value.username}</p>
+                    </div>` 
+            })
+            res.send(rez)
         }
     })
 })

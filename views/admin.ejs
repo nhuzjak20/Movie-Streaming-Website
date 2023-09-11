@@ -38,6 +38,7 @@
               Dobro došao, <%= username %>
             </button>
             <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/odjava">Postavke</a></li>
               <li><a class="dropdown-item" href="/odjava">Odjava</a></li>
             </ul>
         </div>
@@ -86,8 +87,21 @@
                               </div>
                         </form>
                     </div>
-                    <div id="div2" class="glassmorph centriraj">
-                        <div style="margin: 2%;">
+                    <div id="div2" class="glassmorph ">
+                      <ul class="nav nav-tabs centriraj" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#ploca1" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Profil</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#ploca2" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Poruke</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#ploca3" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Prijatelji</button>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="ploca1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                          <div style="margin: 2%; display: flex; flex-direction: column; align-items: center;">
                             <div class="slika">
                                 <img src=<%= slika %> alt="">
                             </div>
@@ -96,8 +110,23 @@
                             </div>
                             <div class="statistika">
                               <h6>Broj objava: <%= num %></h6>
+                            </div>
                           </div>
                         </div>
+                        <div class="tab-pane fade" id="ploca2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+                        <div class="tab-pane fade" style="height: 80%;" id="ploca3" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                          <div>
+                            <input class="form-control" type="search" name="pretraga" placeholder="Begin Typing To Search Users..." hx-post="/pretrazibar" hx-trigger="keyup changed delay:500ms, search" hx-target="#ovamoReza" hx-indicator=".htmx-indicator">
+                
+                          </div>
+                          
+                          <hr>
+                          <div id="ovamoReza" style="overflow-y: scroll; height: 20%;">
+
+                          </div>
+                        </div>
+                      </div>
+                        
                     </div>
                     <div id="div3" class="glassmorph">
                         
