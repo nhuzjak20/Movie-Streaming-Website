@@ -52,10 +52,10 @@
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                 <div id="parent">
                     <div id="div1" class="glassmorph" class="">
-                        <form action="" method="get" class="margina-mala">
+                        <form action="/posaljiobrazac" method="post" class="margina-mala">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Naslov:</label>
-                                <input type="email" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <input type="text" name="naslov" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                 <div id="emailHelp" class="form-text">Napiši naslov objave</div>
                               </div>
                               <div class="mb-3">
@@ -96,9 +96,11 @@
                 <div class="card">
                     <div class="card-body">
                       <form action="/sql" method="get">
-                        <h4>Unesi naredbu za create</h4>
-                        <input type="text" name="query" id="">
-                        <button type="submit">Podnesi sql</button>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="query"></textarea>
+                          </div>
+                          <button type="submit">Podnesi</button>
                       </form>
                     </div>
                   </div>

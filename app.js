@@ -2,7 +2,8 @@
 
 const express = require('express');
 var bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+const { redirect } = require('express/lib/response');
 
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
@@ -26,20 +27,20 @@ app.use(cookieParser())
 app.set('view engine', 'ejs');
 
 
-db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
+/*db.all('select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME="Korisnici"', (err, data) => {
     if (err) return;
     else console.log(data);
-})
+})*/
 
 
-db.all('select * from Korisnici',(err, results) => {
+/*db.all('select * from Korisnici',(err, results) => {
     if (err) console.log(err);
     else if(results.length != 0) {
         console.log(results)
         console.log("Ovo gore je tablica korisnika")
     } 
     else console.log('OK'); 
-})
+})*/
 
 //db.all('create table Objave(korisnik varchar(50) not null, objava varchar(300) not null, )')
 
@@ -173,14 +174,30 @@ app.get('/', (req, res)=>{
     }
 })
 
-app.get('/sql', (req, res) => {
+app.get('/upit', (req, res) => {
     var upit = req.query.query
-    db.all(upit, (err, result) => {
+    db.all('CREATE TABLE Objave(naslov VARCHAR(20) NOT NULL,komentar VARCHAR(300) NOT NULL,datum DATETIME NOT NULL,objavio VARCHAR(20) NOT NULL, kategorija VARCHAR(20) NOT NULL);', (err, result) => {
         if(err) {
             console.log(err)
             res.redirect('/')
         } else {
             res.redirect('/?status=uspjesno')
+        }
+    })
+})
+
+app.post('/posaljiobrazac',urlencodedParser ,function(req, res) {
+    var currentdate = new Date(); 
+    var datetime = currentdate.getDate() + "/" + (currentdate.getMonth()+1)  + "/" + currentdate.getFullYear() + "@"+ currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+    var podaci = [req.body.naslov, req.body.komentar, req.body.kategorija, datetime, req.cookies.userID]
+    
+    var upit = 'INSERT INTO Objave(naslov, komentar, kategorija, datum, objavio) VALUES (?,?,?,?,?)'
+    db.all(upit, podaci, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.redirect('/')
+        } else {
+            res.redirect('/?status=objavaUspjesna')
         }
     })
 })
