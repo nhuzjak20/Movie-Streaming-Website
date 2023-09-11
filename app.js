@@ -202,6 +202,58 @@ app.post('/posaljiobrazac',urlencodedParser ,function(req, res) {
     })
 })
 
+app.post('/ObjaveApi', urlencodedParser,(req, res) => {
+    var upit
+    switch(req.body.kategorija){
+        case '1' : {
+            upit = 'SELECT * FROM Objave WHERE kategorija = ' + 1 + ' ORDER BY datum'
+            break
+        }
+
+        case '2' : {
+            upit = 'SELECT * FROM Objave WHERE kategorija = ' + 2 + ' ORDER BY datum' 
+            break
+        }
+
+        case '3' : {
+            upit = 'SELECT * FROM Objave WHERE kategorija = ' + 3 + ' ORDER BY datum'
+            break
+        }
+        case '4' : {
+            upit = 'SELECT * FROM Objave WHERE kategorija = ' + 4 + ' ORDER BY datum'
+            break
+        }
+        case '5' : {
+            upit = 'SELECT * FROM Objave ORDER BY datum'
+            break
+        }
+    }
+    var rezultat = ``
+    console.log(upit)
+    db.all(upit, (err, result) => {
+        if(err) res.send(`<h3>Error: ${err.message}</h3>`);
+        else {
+            result.forEach((value, key) => {
+                rezultat+= `=<div>
+                <div>
+                    <h5>${value.naslov}</h5>
+                    <h5>${value.objavio}</h5>
+                </div>
+                <div>
+                    <p>${value.komentar}</p>
+                </div>
+                <div>
+                    <p>${value.lajkovi}</p>
+                    <button>Lajkaj</button>
+                    <p>${value.datum}</p>
+                </div>
+            </div>`
+            })
+            res.send(rezultat)
+        }   
+    })
+})
+
 app.get('/odjava', (req, res) => {
     res.clearCookie('uniqueID')
     res.clearCookie('user')
